@@ -1,0 +1,30 @@
+name: deploy
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: ssh - copy file
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.HOST_VM }}
+        username: "root"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./*"
+        target: "~/meet-lab"
+    - name: ssh - executing remote commands
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.HOST_VM }}
+        username: "root"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ~/meet-lab
+          docker compose -f ./docker/docker-compose.yml up -d

@@ -1,0 +1,19 @@
+version: '3'
+services:
+    secret-management:
+        container_name: infisical-app
+        image: infisical/infisical:latest
+        env_file: "${PWD}/app/secret-management/app.env"
+        labels:
+            logging: "promtail"
+            logging_jobname: "containerlogs"
+        environment:
+            - VIRTUAL_HOST=infisical.quocnp.tech
+            - LETSENCRYPT_HOST=infisical.quocnp.tech
+        expose:
+            - "80"
+        networks:
+            - proxy
+networks:
+  proxy:
+    name: proxy

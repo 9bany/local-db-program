@@ -1,0 +1,49 @@
+
+version: "3"
+
+services:
+
+  antelope-node1:
+    container_name: antelope-node1
+    image: 9bany/antelope:v0.0.1-rc004
+    ports:
+      - "8080:8080"
+    volumes:
+      - /tmp/data/node1:/data
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
+    networks:
+      - antelope
+      - antelope_internal
+
+  antelope-node2:
+    container_name: antelope-node2
+    image: 9bany/antelope:v0.0.1-rc004
+    ports:
+      - "8082:8080"
+    volumes:
+      - /tmp/data/node2:/data
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
+    networks:
+      - antelope_internal
+
+  antelope-node3:
+    container_name: antelope-node3
+    image: 9bany/antelope:v0.0.1-rc004
+    volumes:
+      - /tmp/data/node3:/data
+    ports:
+      - "8083:8080"
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
+    networks:
+      - antelope_internal
+  
+networks:
+  antelope:
+  antelope_internal:
+    internal: true

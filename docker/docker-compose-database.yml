@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  postgresql-db:
+    container_name: postgres-db
+    image: postgres:16.0
+    labels:
+      - UFW_MANAGED=TRUE
+    environment:
+      - POSTGRES_USER=superadmin
+      - POSTGRES_PASSWORD=superadmin
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    networks:
+      - db
+    restart: unless-stopped
+  redis:
+    container_name: redis-db
+    image: redis:7.2.1-alpine
+    labels:
+      - UFW_MANAGED=TRUE
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=superredis
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    ports:
+      - 6379:6379
+    expose:
+      - 6379
+    networks:
+      - db
+    restart: unless-stopped
+volumes:
+  postgres:
+  redis:
+  redis-config:
+networks:
+  db:
+    name: db

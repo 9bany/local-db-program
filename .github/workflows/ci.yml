@@ -1,0 +1,67 @@
+name: test-docker-components
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+jobs:
+  proxy:
+    name: proxy
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set env
+      run: echo "PWD=${{github.workspace}}" >> $GITHUB_ENV
+
+    - uses: thebox-lab/compose-action@v0.0.1-rc002
+      with:
+        compose-file: "./docker/docker-compose-proxy.yml"
+        down-flags: "--volumes"
+  apps:
+    name: apps
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set env
+      run: echo "PWD=${{github.workspace}}" >> $GITHUB_ENV
+
+    - uses: thebox-lab/compose-action@v0.0.1-rc002
+      with:
+        compose-file: "./docker/docker-compose.yml"
+        down-flags: "--volumes"
+  
+  admin:
+    name: administrator
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set env
+      run: echo "PWD=${{github.workspace}}" >> $GITHUB_ENV
+
+    - uses: thebox-lab/compose-action@v0.0.1-rc002
+      with:
+        compose-file: "./docker/docker-compose-admin.yml"
+        down-flags: "--volumes"
+  
+  antelope:
+    name: antelope
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set env
+      run: echo "PWD=${{github.workspace}}" >> $GITHUB_ENV
+
+    - uses: thebox-lab/compose-action@v0.0.1-rc002
+      with:
+        compose-file: "./docker/docker-compose-antelope.yml"
+        down-flags: "--volumes"
