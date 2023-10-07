@@ -7,4 +7,4 @@ providers:
   type: file
   disableDeletion: true
   options:
-    path: /app.cfg/dashboards
+    path: /app.cfg/provisioning/dashboards
